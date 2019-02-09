@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -7,56 +5,106 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class UI{
     public static Dimension screenSize;
     public static UI instance = null;
+
     public static final Font HEADERFONT = new Font("Sanserif", Font.PLAIN, 40);
     public static final Font BODYFONT = new Font("Sanserif",Font.PLAIN,25);
 
     private JFrame menuFrame = new JFrame();
     private JFrame aboutFrame = new JFrame();
 
-    private class HighScore{
+    private SplashScreen splash = null;
+    private HighScore    score = null;
+
+
+    private static class SplashScreen{
+        private static String imageLocation = "C:/Users/poaghaba/Desktop/HuntTheWumpusJava/resources/g761.png";
+        private static JFrame splashFrame;
+        private static JLabel imgLabel;
+        SplashScreen() {
+            splashFrame = new JFrame("");
+            splashFrame.setUndecorated(true);
+            imgLabel = new JLabel(new ImageIcon(imageLocation));
+            splashFrame.add(imgLabel);
+            splashFrame.pack();
+            splashFrame.setLocationRelativeTo(null);
+        }
+        public void ShowSplashScreen()
+        {
+            splashFrame.setVisible(true);
+            try {
+                TimeUnit.SECONDS.sleep(Main.SplashScreenDelay);
+            }
+            catch(Exception e){}
+            splashFrame.dispatchEvent(new WindowEvent(splashFrame, WindowEvent.WINDOW_CLOSING));
+        }
+    }
+
+    private static class HighScore{
+        private static String filePath = "C:/Users/poaghaba/Desktop/HuntTheWumpusJava/resources/scores.csv";
+        ArrayList<ScoreRow> scores = new ArrayList<ScoreRow>();
         private JFrame highscoreFrame = new JFrame();
 
+        private class ScoreRow{
+            public String name;
+            public int score;
+            public String caveName;
+            ScoreRow(String n, int s, String c){
+                name = n;
+                score = s;
+                caveName = c;
+            }
+        }
+
         HighScore(){
-            //Load in highscore data from file
-                //close file
+            try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
+                for(String row : stream.toArray(String[]::new)){
+                    StringTokenizer st = new StringTokenizer(row);
+                    scores.add(new ScoreRow(st.nextToken(),Integer.parseInt(st.nextToken()), st.nextToken()));
+                }
+            }
+            catch(Exception e){}
+
+            /*
+            for(ScoreRow s : scores){
+                System.out.println(s.name);
+            }
+            */
+
+            //close file
             //create panel for highscore display
         }
     }
 
     public static void Create(){
         //Good place to do the lookandfeel if i decide to go with it
+        if(instance != null){
+            return;
+        }
         instance = new UI();
     }
 
     private UI(){
          screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+         splash = new SplashScreen();
+         score  = new HighScore();
          MainMenu();
          About();
-         HighScore();
     }
 
     public void ShowSplashScreen()
     {
-        JFrame frame = new JFrame("SplashScreen");
-        frame.setUndecorated(true);
-
-        JLabel imgLabel = new JLabel(new ImageIcon("C:/Users/spark/Desktop/Fiddle/resources/g761.png"));
-
-        frame.add(imgLabel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        try {
-            TimeUnit.SECONDS.sleep(Main.SplashScreenDelay);
-        }
-        catch(Exception e){}
-        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        splash.ShowSplashScreen();
     }
 
     public void ShowMainMenu(){
@@ -95,7 +143,7 @@ public class UI{
         MenuButton quit     = new MenuButton("Quit");
 
 
-        /title.select
+        //title.select
         //play.addActionListener(this);
         //howTo.addActionListener(this);
         about.addActionListener(new ActionListener() {
@@ -169,12 +217,7 @@ public class UI{
 
     }
 
-    private void HighScore()
-    {
-
-    }
-
-    private void addHeader(@NotNull JTextPane pane, String text) {
+    private void addHeader( JTextPane pane, String text) {
         StyledDocument doc = pane.getStyledDocument();
 
         Style style = pane.addStyle("Header Style", null);
@@ -187,7 +230,7 @@ public class UI{
         }
     }
 
-    private void addBody(@NotNull JTextPane pane, String text) {
+    private void addBody( JTextPane pane, String text) {
         StyledDocument doc = pane.getStyledDocument();
 
         Style style = pane.addStyle("Header Style", null);

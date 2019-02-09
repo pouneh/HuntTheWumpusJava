@@ -11,6 +11,6 @@ public class Main {
     public static void main(String[] args) {
         UI.Create();
         UI.instance.ShowSplashScreen();
-        UI.instance.ShowMainMenu();
+        //UI.instance.ShowMainMenu();
     }
 }
