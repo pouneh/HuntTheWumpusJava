@@ -17,7 +17,5 @@ public class GameEntities {
     private GameEntities(){
         player = new Player();
         //TODO create Antagonists
-        //TODO create Player
-
     }
 }

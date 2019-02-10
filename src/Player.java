@@ -45,4 +45,8 @@ public class Player extends Entity{
     public int GetCurrentScore(){
         return (100 - turnCount + coinCount + 5*arrowCount + (wonGame ? 50 : 0));
     }
+
+    public ScoreRow GetScoreRow(){
+        return new ScoreRow("", GetCurrentScore(), "", turnCount, coinCount, arrowCount, wonGame);
+    }
 }

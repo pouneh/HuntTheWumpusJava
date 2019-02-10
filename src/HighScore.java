@@ -27,7 +27,9 @@ public class HighScore {
 
             for(String row : stream.toArray(String[]::new)){
                 StringTokenizer st = new StringTokenizer(row, ",", false);
-                ScoreRow next = new ScoreRow(st.nextToken(),Integer.parseInt(st.nextToken()), st.nextToken());
+                ScoreRow next = new ScoreRow(st.nextToken(),Integer.parseInt(st.nextToken()), st.nextToken(),
+                                                Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()),
+                                                Integer.parseInt(st.nextToken()),Boolean.parseBoolean(st.nextToken()));
                 scores.add(next);
             }
             Collections.sort(scores);
@@ -49,7 +51,12 @@ public class HighScore {
                     pw.println(new String(new StringBuilder()
                             .append(s.getName()).append(',')
                             .append(s.getScore()).append(',')
-                            .append(s.getCaveName())));
+                            .append(s.getCaveName()).append(',')
+                            .append(s.getTurnCount()).append(',')
+                            .append(s.getCoins()).append(',')
+                            .append(s.getArrowCount()).append(',')
+                            .append(s.getWinStatus())
+                    ));
                 }
                 pw.close();
             }
