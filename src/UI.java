@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
@@ -22,13 +24,15 @@ public class UI{
 
     private JFrame menuFrame = new JFrame();
     private JFrame aboutFrame = new JFrame();
+    private JFrame highscoreFrame = new JFrame(); //TODO Create the UI for high score
+
 
     private SplashScreen splash = null;
     private HighScore    score = null;
 
 
     private static class SplashScreen{
-        private static String imageLocation = "C:/Users/poaghaba/Desktop/HuntTheWumpusJava/resources/g761.png";
+        private static String imageLocation = Paths.get(Main.ResourceDirectory, "g761.png").toString();
         private static JFrame splashFrame;
         private static JLabel imgLabel;
         SplashScreen() {
@@ -50,42 +54,6 @@ public class UI{
         }
     }
 
-    private static class HighScore{
-        private static String filePath = "C:/Users/poaghaba/Desktop/HuntTheWumpusJava/resources/scores.csv";
-        ArrayList<ScoreRow> scores = new ArrayList<ScoreRow>();
-        private JFrame highscoreFrame = new JFrame();
-
-        private class ScoreRow{
-            public String name;
-            public int score;
-            public String caveName;
-            ScoreRow(String n, int s, String c){
-                name = n;
-                score = s;
-                caveName = c;
-            }
-        }
-
-        HighScore(){
-            try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
-                for(String row : stream.toArray(String[]::new)){
-                    StringTokenizer st = new StringTokenizer(row);
-                    scores.add(new ScoreRow(st.nextToken(),Integer.parseInt(st.nextToken()), st.nextToken()));
-                }
-            }
-            catch(Exception e){}
-
-            /*
-            for(ScoreRow s : scores){
-                System.out.println(s.name);
-            }
-            */
-
-            //close file
-            //create panel for highscore display
-        }
-    }
-
     public static void Create(){
         //Good place to do the lookandfeel if i decide to go with it
         if(instance != null){
@@ -98,8 +66,8 @@ public class UI{
          screenSize = Toolkit.getDefaultToolkit().getScreenSize();
          splash = new SplashScreen();
          score  = new HighScore();
-         MainMenu();
-         About();
+         //MainMenu();
+         //About();
     }
 
     public void ShowSplashScreen()
@@ -112,17 +80,17 @@ public class UI{
     }
 
     public void ShowHighScore(){
-        // #TODO
+        // TODO
         return;
     }
 
     public void ShowHowTo(){
-        // #TODO
+        // TODO
         return;
     }
 
     public void StartGame(){
-
+        // TODO
     }
 
     private void MainMenu()
