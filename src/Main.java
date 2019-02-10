@@ -7,8 +7,10 @@ public class Main {
     public static final String ResourceDirectory = Paths.get(WorkingDirectory, "resources").toString();
 
     public static void main(String[] args) {
+        GameEntities.Init();
         UI.Create();
         HighScore.Init();
+
         //UI.instance.ShowSplashScreen();
         //UI.instance.ShowMainMenu();
 
