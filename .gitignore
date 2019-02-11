@@ -1,0 +1,5 @@
+#output directory
+out/**
+
+#workspace file
+.idea/workspace.xml
